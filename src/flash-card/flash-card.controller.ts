@@ -1,6 +1,7 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post , Get, Put, Query} from '@nestjs/common';
 import { FlashCardService } from './flash-card.service';
-import { FlashCard, FlashCardFolder } from './schemas/flashCardFolder.Schema';
+import { FlashCard, FlashCardFolder } from './schemas/flashCard.Schema';
+import { ObjectId } from 'mongodb'
 
 @Controller('flash-card')
 export class FlashCardController {
@@ -20,5 +21,27 @@ export class FlashCardController {
         FlashCard: any
         ): Promise<FlashCard> {
        return this.flashCardService.createCard(FlashCard)
+    }
+
+    @Get('folders-card')
+    async getFoldersCard(
+        @Query('id') id: string,
+        ): Promise<FlashCard[]> {
+       return this.flashCardService.getFoldersCard(id)
+    }
+
+    @Get('single-card')
+    async getSingleCard(
+        @Query('id') id: ObjectId,
+        ): Promise<FlashCard> {
+       return this.flashCardService.getSingleCard(id)
+    }
+
+    @Put('update-card')
+    async updateCard(
+        @Body()
+        FlashCard: any
+        ) {
+       return this.flashCardService.updateCard(FlashCard)
     }
 }
