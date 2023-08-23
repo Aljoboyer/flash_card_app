@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
+
 export class FlashCardService {
     constructor(
         @InjectModel(FlashCardFolder.name)
