@@ -17,9 +17,8 @@ export class FlashCardController {
     @Post('create-flash-card')
     async createFlashCard(
         @Body()
-        FlashCard
+        FlashCard: any
         ): Promise<FlashCard> {
-      
        return this.flashCardService.createCard(FlashCard)
     }
 }

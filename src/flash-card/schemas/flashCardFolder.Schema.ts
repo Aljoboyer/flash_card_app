@@ -12,9 +12,11 @@ export class FlashCardFolder {
     @Prop()
     shareLink: String
 }
-
 export const FlashCardFolderSchema = SchemaFactory.createForClass(FlashCardFolder);
 
+@Schema({
+    timestamps: true,
+})
 export class FlashCard {
 
     @Prop()
