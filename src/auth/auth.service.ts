@@ -3,8 +3,9 @@ import { InjectModel } from '@nestjs/mongoose';
 import { CardUser } from './schemas/user.schema';
 import { Model } from 'mongoose';
 const bcrypt = require("bcryptjs");
-import { SignupDto } from 'src/DTO/signupDto';
+import { SignupDto } from '../DTO/signupDto';
 import { JwtService } from '@nestjs/jwt';
+import { SigninDto } from '../DTO/signInDto';
 
 @Injectable()
 export class AuthService {
@@ -31,7 +32,7 @@ export class AuthService {
         return {token, userData}
     }
 
-    async signIn(user: SignupDto): Promise<{token: string , message: string}> {
+    async signIn(user: SigninDto): Promise<{token: string , message: string}> {
         const {email, password } = user; 
 
         const oldUser = await this.userModel.findOne({ email: email });

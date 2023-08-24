@@ -1,7 +1,8 @@
-import { Body, Controller, Post , Get, Put, Query} from '@nestjs/common';
+import { Body, Controller, Post , Get, Put, Query, UseGuards} from '@nestjs/common';
 import { FlashCardService } from './flash-card.service';
 import { FlashCard, FlashCardFolder } from './schemas/flashCard.Schema';
 import { ObjectId } from 'mongodb'
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('flash-card')
 export class FlashCardController {
@@ -24,6 +25,7 @@ export class FlashCardController {
     }
 
     @Get('folders-card')
+    @UseGuards(AuthGuard())
     async getFoldersCard(
         @Query('id') id: string,
         ): Promise<FlashCard[]> {
@@ -31,6 +33,7 @@ export class FlashCardController {
     }
 
     @Get('single-card')
+    @UseGuards(AuthGuard())
     async getSingleCard(
         @Query('id') id: ObjectId,
         ): Promise<FlashCard> {
