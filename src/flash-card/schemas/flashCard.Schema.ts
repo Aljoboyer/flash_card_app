@@ -11,6 +11,9 @@ export class FlashCardFolder {
 
     @Prop()
     shareLink: String
+
+    @Prop()
+    created_by: String
 }
 export const FlashCardFolderSchema = SchemaFactory.createForClass(FlashCardFolder);
 

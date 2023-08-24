@@ -3,6 +3,7 @@ import { FlashCard, FlashCardFolder } from './schemas/flashCard.Schema';
 import mongoose from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { ObjectId } from 'mongodb'
+import { FlashCardDto } from 'src/DTO/flashCardDto';
 
 @Injectable()
 
@@ -25,10 +26,17 @@ export class FlashCardService {
         return res
     }
 
-    async createCard(card: FlashCard): Promise<FlashCard> {
+    async createCard(card: FlashCardDto): Promise<FlashCard> {
         
         const res = await this.FlashCardModel.create(card)
 
+        return res
+    }
+
+    async getUserFolders(userId: string): Promise<FlashCardFolder[]> {
+        const res = await this.FlashCardFolderModel.find({created_by: userId})
+        const cardCount = await this.FlashCardModel.find({created_by: userId}).count()
+      
         return res
     }
 

@@ -3,12 +3,14 @@ import { FlashCardService } from './flash-card.service';
 import { FlashCard, FlashCardFolder } from './schemas/flashCard.Schema';
 import { ObjectId } from 'mongodb'
 import { AuthGuard } from '@nestjs/passport';
+import { FlashCardDto } from 'src/DTO/flashCardDto';
 
 @Controller('flash-card')
 export class FlashCardController {
     constructor(private flashCardService: FlashCardService){}
 
     @Post('create-flashCard-folder')
+    @UseGuards(AuthGuard())
     async createFlashCardFolder(
         @Body()
         FlashCardFolder
@@ -17,11 +19,19 @@ export class FlashCardController {
     }
 
     @Post('create-flash-card')
+    @UseGuards(AuthGuard())
     async createFlashCard(
         @Body()
-        FlashCard: any
+        FlashCard: FlashCardDto
         ): Promise<FlashCard> {
        return this.flashCardService.createCard(FlashCard)
+    }
+
+    @Get('folders')
+    async getFolders(
+        @Query('id') id: string,
+        ): Promise<FlashCardFolder[]> {
+       return this.flashCardService.getUserFolders(id)
     }
 
     @Get('folders-card')
