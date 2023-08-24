@@ -27,6 +27,9 @@ export class FlashCard {
 
     @Prop()
     folderId: String
+
+    @Prop()
+    created_by: String
 }
 
 export const FlashCardSchema = SchemaFactory.createForClass(FlashCard);

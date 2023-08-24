@@ -16,13 +16,19 @@ export class FlashCardService {
     ){}
 
     async createFolder(folder: FlashCardFolder): Promise<FlashCardFolder> {
+        
         const res = await this.FlashCardFolderModel.create(folder)
+
+        const generateLink = `${process.env.URL}/flash-card/folders-card?id=${res._id}`
+        const addingShareLink = await this.FlashCardFolderModel.updateOne({_id: new ObjectId(res._id)},{ $set: {shareLink: generateLink}} ); 
+
         return res
     }
 
     async createCard(card: FlashCard): Promise<FlashCard> {
-        console.log('This is body', card)
+        
         const res = await this.FlashCardModel.create(card)
+
         return res
     }
 
@@ -45,5 +51,10 @@ export class FlashCardService {
         catch{
             return {status: 400, message: 'please provide all update data properly'}
         }
+    }
+
+    async deleteCard(id: ObjectId): Promise<Object> {
+        const res = await this.FlashCardModel.deleteOne({_id: new ObjectId(id)})
+        return {message: 'Deleted Successfully'}
     }
 }

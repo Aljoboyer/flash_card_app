@@ -1,4 +1,4 @@
-import { Body, Controller, Post , Get, Put, Query, UseGuards} from '@nestjs/common';
+import { Body, Controller, Post , Get, Put, Query, UseGuards, Delete} from '@nestjs/common';
 import { FlashCardService } from './flash-card.service';
 import { FlashCard, FlashCardFolder } from './schemas/flashCard.Schema';
 import { ObjectId } from 'mongodb'
@@ -41,10 +41,19 @@ export class FlashCardController {
     }
 
     @Put('update-card')
+    @UseGuards(AuthGuard())
     async updateCard(
         @Body()
         FlashCard: any
         ) {
        return this.flashCardService.updateCard(FlashCard)
+    }
+
+    @Delete('delete-card')
+    @UseGuards(AuthGuard())
+    async deleteCard(
+        @Query('id') id: ObjectId,
+        ) {
+       return this.flashCardService.deleteCard(id)
     }
 }
