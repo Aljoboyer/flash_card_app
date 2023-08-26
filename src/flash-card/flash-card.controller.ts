@@ -1,13 +1,20 @@
-import { Body, Controller, Post , Get, Put, Query, UseGuards, Delete} from '@nestjs/common';
+import { Body, Controller, Post , Get, Put, Query, UseGuards, Delete, Inject} from '@nestjs/common';
 import { FlashCardService } from './flash-card.service';
 import { FlashCard, FlashCardFolder } from './schemas/flashCard.Schema';
 import { ObjectId } from 'mongodb'
 import { AuthGuard } from '@nestjs/passport';
 import { FlashCardDto } from 'src/DTO/flashCardDto';
+import { ClientProxy, EventPattern } from '@nestjs/microservices';
 
 @Controller('flash-card')
 export class FlashCardController {
-    constructor(private flashCardService: FlashCardService){}
+    constructor(
+        private flashCardService: FlashCardService,
+
+        @Inject("FLASHCARD_SERVICE") 
+        private readonly client: ClientProxy,
+
+        ){}
 
     @Post('create-flashCard-folder')
     @UseGuards(AuthGuard())
@@ -65,5 +72,17 @@ export class FlashCardController {
         @Query('id') id: ObjectId,
         ) {
        return this.flashCardService.deleteCard(id)
+    }
+
+    @Post('shared-link')
+    async sharedLink(){
+        await this.client.emit('FlashCardEvent', 'Notifcation Sended to ahan vai');
+    }
+
+    @EventPattern('FlashCardEvent')
+    @Get('notify')
+    async postNotification(data: string){
+        console.log(data)
+       return {mesg: data}
     }
 }
